@@ -9,8 +9,6 @@ numbers = [75, 5, 9, 3, 8, 10]
 target = 699
 
 # Generate all possible partitions of the numbers
-step1 = (c for i in range(2, len(numbers)+1) for c in permutations(numbers, i))
-
 # Generate partitions for each tuple
 # Slice the tuple permutations into tuple sub-partitions
 step2 = (chain.from_iterable
@@ -21,7 +19,10 @@ step2 = (chain.from_iterable
                     for j in [[l[:i], l[i:j], l[j:]] 
                               for i in range(1,len(l)+1) 
                               for j in range(i+1,len(l)+1)]] 
-                   for l in step1)))
+                   for l in (
+                            c for i in range(2, len(numbers)+1) 
+                            for c in permutations(numbers, i))
+)))
 
 # Generate the Cartesian product of all permutations of numbers and operators
 cartesian_product = ((x, y)
