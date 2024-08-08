@@ -40,11 +40,11 @@ cartesian_product = (
             )
         )
     )
-    for y in [
-        list(p)
+    for y in (
+        p
         for r in range(2, 7)
         for p in combinations_with_replacement(["+", "-", "*", "/"], r - 1)
-    ]
+    )
     if len(x) == len(y) + 1
 )
 
