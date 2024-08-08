@@ -4,7 +4,7 @@ Python script to attempt to solve the Channel 4 Countdown numbers game by brute 
 
 from itertools import chain, combinations_with_replacement, permutations, zip_longest
 
-# Define the two lists and a target
+# Define the numbers list and a target
 numbers = [75, 5, 9, 3, 8, 10]
 target = 699
 
@@ -16,16 +16,18 @@ step1 = (c for i in range(2, len(numbers)+1) for c in permutations(numbers, i))
 step2 = (chain.from_iterable
          ([[(i[0], i[1]), i[2]], [i[0], (i[1], i[2])]] 
           if len(i)==3 else i 
-          for i in chain.from_iterable([[i for i in j if i] 
-                                        for j in [[l[:i], l[i:j], l[j:]] 
-                                                  for i in range(1,len(l)+1) 
-                                                  for j in range(i+1,len(l)+1)]] 
-                                       for l in step1)))
+          for i in chain.from_iterable(
+                   [[i for i in j if i] 
+                    for j in [[l[:i], l[i:j], l[j:]] 
+                              for i in range(1,len(l)+1) 
+                              for j in range(i+1,len(l)+1)]] 
+                   for l in step1)))
 
 # Generate the Cartesian product of all permutations of numbers and operators
 cartesian_product = ((x, y)
     for x in (' '.join((map(str, i))).replace(',', '').split(' ') 
-              for i in ([i for i in y if i] for y in step2))
+              for i in ([i for i in y if i] 
+                        for y in step2))
     for y in [list(p)
               for r in range(2, 7)
               for p in combinations_with_replacement(['+', '-', '*', '/'], r - 1)]
