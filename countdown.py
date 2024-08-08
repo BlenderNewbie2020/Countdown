@@ -14,12 +14,10 @@ step2 = list(chain.from_iterable([[[l[:i], l[i:j], l[j:]]
                                    for j in range(i+1,len(l)+1)]
                                   for l in step1]))
 
-# convert to a list of strings, removing commas
-step4 = (' '.join((map(str, i))).replace(',', '').split(' ') for i in ([i for i in y if i] for y in step2))
-
 # Generate the Cartesian product of all permutations of numbers and operators
 cartesian_product = ((x, y)
-    for x in step4
+    for x in (' '.join((map(str, i))).replace(',', '').split(' ') 
+              for i in ([i for i in y if i] for y in step2))
     for y in [list(p)
               for r in range(2, 7)
               for p in combinations_with_replacement(operators, r - 1)]
