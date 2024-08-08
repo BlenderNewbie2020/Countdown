@@ -23,7 +23,7 @@ def daisy(l):
     return k
 
 # Generate all possible partitions of the numbers
-step1 = [c for i in range(2, len(numbers)+1) for c in permutations(numbers, i)]
+step1 = (c for i in range(2, len(numbers)+1) for c in permutations(numbers, i))
 
 # Generate partitions for each tuple
 step2 = (chain.from_iterable([daisy(l) for l in step1]))
