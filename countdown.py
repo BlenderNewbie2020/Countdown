@@ -9,24 +9,19 @@ numbers = [75, 5, 9, 3, 8, 10]
 operators = ['+', '-', '*', '/']
 target = 699
 
-# Slice the tuple permutations into tuple sub-partitions
-def daisy(l):
-    # Slice the tuple creating smaller tuples inside parentheses
-    k = ([[i for i in j if i]
-          for j in [[l[:i], l[i:j], l[j:]]
-                    for i in range(1,len(l)+1)
-                    for j in range(i+1,len(l)+1)]])
-    # Slice 3-tuples into parenthesised pairs
-    if len(k) > 3:
-        return chain.from_iterable([[(i[0], i[1]), i[2]], [i[0], (i[1], i[2])]]
-                                   for i in k if len(i)==3)
-    return k
-
 # Generate all possible partitions of the numbers
 step1 = (c for i in range(2, len(numbers)+1) for c in permutations(numbers, i))
 
 # Generate partitions for each tuple
-step2 = (chain.from_iterable([daisy(l) for l in step1]))
+# Slice the tuple permutations into tuple sub-partitions
+step2 = (chain.from_iterable
+         ([[(i[0], i[1]), i[2]], [i[0], (i[1], i[2])]] 
+          if len(i)==3 else i 
+          for i in chain.from_iterable([[i for i in j if i] 
+                                        for j in [[l[:i], l[i:j], l[j:]] 
+                                                  for i in range(1,len(l)+1) 
+                                                  for j in range(i+1,len(l)+1)]] 
+                                       for l in step1)))
 
 # Generate the Cartesian product of all permutations of numbers and operators
 cartesian_product = ((x, y)
