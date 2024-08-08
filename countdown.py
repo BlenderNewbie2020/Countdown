@@ -1,9 +1,9 @@
 from itertools import chain, combinations_with_replacement, permutations, zip_longest
 
-# perl -e 'print sort { length($a) <=> length($b) } <>'
 # Define the two lists
 numbers = [75, 5, 9, 3, 8, 10]
 operators = ['+', '-', '*', '/']
+target = 699
 
 # Generate all possible partitions of the numbers
 step1 = [c for i in range(2, len(numbers)+1) for c in permutations(numbers, i)]
@@ -14,11 +14,8 @@ step2 = list(chain.from_iterable([[[l[:i], l[i:j], l[j:]]
                                    for j in range(i+1,len(l)+1)]
                                   for l in step1]))
 
-# remove empty lists
-step3 = ([i for i in y if i] for y in step2)
-
 # convert to a list of strings, removing commas
-step4 = (' '.join((map(str, i))).replace(',', '').split(' ') for i in step3)
+step4 = (' '.join((map(str, i))).replace(',', '').split(' ') for i in ([i for i in y if i] for y in step2))
 
 # Generate the Cartesian product of all permutations of numbers and operators
 cartesian_product = ((x, y)
@@ -35,6 +32,6 @@ zipped_product = (''.join(
           for item in sublist))
                   for x in cartesian_product)
 
-result = (i for i in zipped_product if eval(i) == 699)
+result = (i for i in zipped_product if eval(i) == target)
 
 print(list(result))
