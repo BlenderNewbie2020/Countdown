@@ -6,7 +6,6 @@ from itertools import chain, combinations_with_replacement, permutations, zip_lo
 
 # Define the two lists and a target
 numbers = [75, 5, 9, 3, 8, 10]
-operators = ['+', '-', '*', '/']
 target = 699
 
 # Generate all possible partitions of the numbers
@@ -29,7 +28,7 @@ cartesian_product = ((x, y)
               for i in ([i for i in y if i] for y in step2))
     for y in [list(p)
               for r in range(2, 7)
-              for p in combinations_with_replacement(operators, r - 1)]
+              for p in combinations_with_replacement(['+', '-', '*', '/'], r - 1)]
     if len(x) == len(y) + 1)
 
 # Zip the Cartesian product using itertools.zip_longest
