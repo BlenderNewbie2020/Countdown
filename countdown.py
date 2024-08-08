@@ -1,15 +1,22 @@
+'''
+Python script to attempt to solve the Channel 4 Countdown numbers game by brute force.
+'''
+
 from itertools import chain, combinations_with_replacement, permutations, zip_longest
 
-# Define the two lists
+# Define the two lists and a target
 numbers = [75, 5, 9, 3, 8, 10]
 operators = ['+', '-', '*', '/']
 target = 699
 
+# Slice the tuple permutations into tuple sub-partitions
 def daisy(l):
+    # Slice the tuple creating smaller tuples inside parentheses
     k = ([[i for i in j if i]
           for j in [[l[:i], l[i:j], l[j:]]
                     for i in range(1,len(l)+1)
                     for j in range(i+1,len(l)+1)]])
+    # Slice 3-tuples into parenthesised pairs
     if len(k) > 3:
         return chain.from_iterable([[(i[0], i[1]), i[2]], [i[0], (i[1], i[2])]]
                                    for i in k if len(i)==3)
@@ -37,6 +44,6 @@ zipped_product = (''.join(
           for item in sublist))
                   for x in cartesian_product)
 
+# Evaluate each string, printing strings that equal the target
 result = (i for i in zipped_product if eval(i) == target)
-
 print(list(result))
